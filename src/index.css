@@ -1,0 +1,419 @@
+:root{
+  --sky1:#58d7ff;
+  --sky2:#2aa7ff;
+  --borderDark:#1b6b8e;
+  --borderLight:#bff2ff;
+  --paper:#eaf8ff;
+  --ink:#07344a;
+}
+
+*{ box-sizing:border-box; }
+html,body{ height:100%; }
+body{
+  margin:0;
+  background:#0aa7a7;
+  color:var(--ink);
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+}
+
+.page{
+  min-height: 100vh;
+  min-width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  padding: 0;
+  background: #0aa7a7;
+}
+
+.rw-shell{
+  width: 100vw;
+  height: 100vh;
+  background: var(--paper);
+  border: 0;
+  border-radius: 0;
+  overflow: hidden;
+  box-shadow: none;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Safari iPhone: mejor uso de la altura real */
+@supports (height: 100dvh){
+  .rw-shell{ height: 100dvh; }
+}
+
+.rw-titlebar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:6px 8px;
+  color:#fff;
+  background: linear-gradient(180deg, var(--sky1), var(--sky2));
+}
+
+.rw-title{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  font-weight:700;
+  font-size:13px;
+}
+.rw-titleText{ opacity:.98; }
+.rw-drop{ opacity:.95; }
+
+.rw-controls{ display:flex; gap:6px; }
+.rw-btn{
+  width:28px;
+  height:22px;
+  border-radius:4px;
+  border:1px solid rgba(255,255,255,.5);
+  background: rgba(255,255,255,.12);
+  color:#fff;
+  cursor:pointer;
+}
+.rw-btn:hover{ background: rgba(255,255,255,.22); }
+.rw-close{ background: rgba(255,90,90,.35); }
+
+.rw-body{
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.rw-content{
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+}
+
+.rw-subtitle{
+  margin: 2px 0 8px;
+  font-weight:700;
+  font-size:12px;
+  opacity:.8;
+  text-align:right;
+}
+
+.rw-tabs{
+  display:flex;
+  gap:8px;
+  margin-bottom:10px;
+  padding: 0 2px;
+}
+.rw-tab{
+  flex:1;
+  padding:8px 10px;
+  border-radius:9px;
+  border: 1px solid #7fd6ff;
+  background: rgba(127,214,255,.28);
+  color: #08445c;
+  font-weight:800;
+  cursor:pointer;
+}
+.rw-tab.is-active{
+  background: rgba(127,214,255,.55);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.8);
+}
+
+/* header */
+.panel--top{
+  display: grid;
+  grid-template-columns: 92px 1fr;
+  gap: 10px;
+  align-items: center;
+}
+
+.leftPhoto{
+  width: 92px;
+  aspect-ratio: 1 / 1;
+  border-radius:12px;
+  overflow:hidden;
+  border: 7px solid #2acb2a;
+  box-shadow: inset 0 0 0 3px rgba(255,255,255,.6);
+}
+.coverImg{
+  width:100%;
+  height:100%;
+  display:block;
+  object-fit:cover;
+}
+
+.rightHead .headline{
+  font-weight:900;
+  text-align:center;
+  font-size:13px;
+  padding:4px 6px;
+  border-bottom: 2px solid rgba(7,52,74,.15);
+}
+
+.saysBox{
+  margin-top:8px;
+  background: rgba(255,255,255,.9);
+  border: 1px solid rgba(7,52,74,.18);
+  border-radius:10px;
+  padding:8px;
+}
+.saysName{ font-size:12px; opacity:.8; font-weight:700; }
+.saysMsg{ margin-top:4px; font-weight:900; }
+
+.textBlock{
+  font-size:12px;
+  line-height:1.35;
+  background: rgba(255,255,255,.65);
+  border: 1px solid rgba(7,52,74,.12);
+  border-radius:10px;
+  padding:10px;
+}
+
+/* info */
+.infoWrap{
+  margin-top:10px;
+  padding:10px;
+  border-radius:10px;
+  background: rgba(255,255,255,.65);
+  border: 1px solid rgba(7,52,74,.12);
+}
+.infoTitle{
+  font-weight:900;
+  margin-bottom:8px;
+}
+.infoGrid{
+  display:grid;
+  gap:10px;
+}
+.infoRow{
+  display:flex;
+  gap:10px;
+  align-items:flex-start;
+}
+.infoIcon{ width:26px; text-align:center; }
+.infoLabel{ font-weight:800; font-size:12px; opacity:.8; }
+.infoValue{ font-weight:800; font-size:12px; }
+
+/* location */
+.locWrap{
+  margin-top:10px;
+  padding:10px;
+  border-radius:10px;
+  background: rgba(255,255,255,.65);
+  border: 1px solid rgba(7,52,74,.12);
+}
+.locTitle{ font-weight:900; margin-bottom:6px; }
+.mapsLink{
+  display:inline-block;
+  font-weight:800;
+  text-decoration:none;
+  color:#0b5bd3;
+  margin-bottom:8px;
+}
+.mapFrame{
+  border-radius:10px;
+  overflow:hidden;
+  border: 1px solid rgba(7,52,74,.18);
+}
+.mapFrame iframe{
+  width:100%;
+  height:190px;
+  border:0;
+  display:block;
+}
+.smallNote{
+  margin-top:8px;
+  font-size:12px;
+  opacity:.85;
+}
+
+/* confirm */
+.confirmWrap{
+  margin-top:10px;
+  padding:10px;
+  border-radius:10px;
+  background: rgba(255,255,255,.65);
+  border: 1px solid rgba(7,52,74,.12);
+}
+.confirmText{
+  font-size:12px;
+  font-weight:700;
+  opacity:.9;
+  margin-bottom:10px;
+}
+.confirmGrid{
+  display:grid;
+  grid-template-columns: 110px 1fr;
+  gap:10px;
+  align-items:start;
+}
+.duckBox{
+  width: 110px;
+  align-self: start;
+  aspect-ratio: 1 / 1;
+  height: auto;
+  border-radius:12px;
+  overflow:hidden;
+  border: 9px solid #2acb2a;
+  background: #fff;
+  display:grid;
+  place-items:center;
+}
+.duckImg{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  display:block;
+}
+.confirmCard{
+  background:#fff;
+  border-radius:12px;
+  border:1px solid rgba(7,52,74,.18);
+  padding:10px;
+}
+.confirmHeader{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  font-weight:900;
+  margin-bottom:8px;
+}
+.confirmWave{ opacity:.6; }
+.field{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  font-size:12px;
+  font-weight:800;
+  margin-bottom:10px;
+}
+.field input{
+  height:32px;
+  border-radius:9px;
+  border:1px solid rgba(7,52,74,.22);
+  padding:0 10px;
+  outline:none;
+}
+.field input:focus{
+  border-color:#2aa7ff;
+  box-shadow: 0 0 0 3px rgba(42,167,255,.22);
+}
+.confirmBtn{
+  width:100%;
+  height:34px;
+  border-radius:10px;
+  border:0;
+  background:#1a7bff;
+  color:#fff;
+  font-weight:900;
+  cursor:pointer;
+}
+.confirmBtn:hover{ filter:brightness(1.05); }
+
+.qrArea{
+  margin-top:10px;
+  display:grid;
+  gap:6px;
+}
+.qrLabel{ font-size:12px; font-weight:900; }
+.qrImg{
+  width:140px;
+  border-radius:10px;
+  border:1px solid rgba(7,52,74,.18);
+}
+.qrHint{ font-size:11px; opacity:.7; }
+
+/* collage continuation */
+.collageWrap{
+  margin-top:12px;
+  border-radius:12px;
+  overflow:hidden;
+  border: 1px solid rgba(7,52,74,.18);
+  background: #fff;
+}
+.collageHeader{
+  padding:10px;
+  font-weight:1000;
+  text-align:center;
+  background: linear-gradient(180deg, var(--sky1), var(--sky2));
+  color:#fff;
+}
+
+.collageSection{ background:#fff; }
+.collageSection--img{ padding:0; }
+.collageSection--boxes{ padding:10px; }
+
+.collageImg{
+  width:100%;
+  height:auto;
+  display:block;
+}
+.twoBoxes{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap:10px;
+}
+.emptyBox{
+  height:140px;
+  border-radius:10px;
+  background: #fff;
+  border: 1px solid rgba(7,52,74,.18);
+}
+.spacer{ height:12px; }
+
+/* --- Collage (nuevo): fondo repetible + contenido encima --- */
+.collageSection--bg{
+  /* El backgroundImage lo pone React inline con style={{backgroundImage:...}} */
+  background-repeat: repeat-y;
+  background-position: top center;
+  background-size: 100% auto;   /* ocupa todo el ancho y se repite hacia abajo */
+  background-color: #fff;       /* por si la imagen tiene huecos */
+  padding: 12px;                /* separación interna para que el contenido no pegue al borde */
+}
+
+.collageOverlay{
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 10px;
+}
+
+/* Bloques */
+.collageBlock--full{
+  width: 100%;
+  display: block;
+  border-radius: 10px;
+  border: 1px solid rgba(0,0,0,.12);
+}
+
+.collageBlock--two{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.collageTile{
+  width: 100%;
+  display: block;
+  border-radius: 10px;
+  border: 1px solid rgba(0,0,0,.12);
+}
+
+/* Textos encima del collage */
+.collageText{
+  margin: 0;
+  text-align: center;
+  font-weight: 1000;
+  letter-spacing: .3px;
+  font-size: 12px;
+  color: #fff;
+  text-shadow:
+    0 2px 0 rgba(0,0,0,.28),
+    0 0 10px rgba(0,0,0,.25);
+  padding: 6px 10px;
+  border-radius: 10px;
+  background: rgba(0,0,0,.28);
+}
+
+/* En pantallas muy chicas, que 50/50 no se apriete demasiado */
+@media (max-width: 360px){
+  .collageBlock--two{ grid-template-columns: 1fr; }
+}
