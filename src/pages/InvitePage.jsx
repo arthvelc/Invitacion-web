@@ -37,7 +37,11 @@ export default function InvitePage() {
         {/* HEADER + FOTO + TITULO */}
         <div className="panel panel--top">
           <div className="leftPhoto">
-            <img className="coverImg" src="../public/images/cover.webp" alt="Foto cover" />
+            <img
+              className="coverImg"
+              src={`${import.meta.env.BASE_URL}images/cover.webp`}
+              alt="Foto cover"
+            />
           </div>
 
           <div className="rightHead">
@@ -191,7 +195,11 @@ function ConfirmBlock({ nameInput, setNameInput, onConfirmYes }) {
 
       <div className="confirmGrid">
         <div className="duckBox">
-          <img className="duckImg" src="../../public/images/patito.webp" alt="Patito" />
+          <img
+            className="duckImg"
+            src={`${import.meta.env.BASE_URL}images/patito.webp`}
+            alt="Patito"
+          />
         </div>
 
         <div className="confirmCard">
@@ -232,22 +240,36 @@ function CollageContinuation() {
       {/* Parte 2: el collage-top.jpg será el FONDO repetible; el contenido va encima */}
       <div
         className="collageSection collageSection--bg"
-        style={{ backgroundImage: "url(/images/collageImages/collage-top.jpg)" }}
+        style={{
+          backgroundImage: `url(${import.meta.env.BASE_URL}images/collageImages/collage-top.jpg)`,
+        }}
       >
         <div className="collageOverlay">
           {/* 1) Imagen a 100% ancho */}
-          <img className="collageBlock collageBlock--full" src="/images/collageImages/collage-1.png" alt="" />
+          <img
+            className="collageBlock collageBlock--full"
+            src={`${import.meta.env.BASE_URL}images/collageImages/collage-1.png`}
+            alt=""
+          />
 
           {/* 2) Dos imágenes 50 / 50 */}
           <div className="collageBlock collageBlock--two">
             <img className="collageTile" src="" alt="" />
-            <img className="collageTile" src="/images/collageImages/collage-2.png" alt="" />
+            <img
+              className="collageTile"
+              src={`${import.meta.env.BASE_URL}images/collageImages/collage-2.png`}
+              alt=""
+            />
           </div>
 
           <p className="collageText">LIMPIA TU CASA, COMIENZA OTRA VEZ…</p>
 
           {/* 3) (Ejemplo) Otra imagen a 100% ancho */}
-          <img className="collageBlock collageBlock--full" src="/images/collageImages/collage-3.png" alt="" />
+          <img
+            className="collageBlock collageBlock--full"
+            src={`${import.meta.env.BASE_URL}images/collageImages/collage-3.png`}
+            alt=""
+          />
 
           <p className="collageText">
             UN POCO DE AUTOCOMPASIÓN ESTÁ BIEN, PERO ES HORA DE SEGUIR ADELANTE.
@@ -277,11 +299,11 @@ function CollageContinuation() {
       </div> */}
 
       {/* <div className="collageSection">
-        <img className="collageImg" src="/collage-mid-1.webp" alt="Collage mid 1" />
+        <img className="collageImg" src={`${import.meta.env.BASE_URL}collage-mid-1.webp`} alt="Collage mid 1" />
       </div>
 
       <div className="collageSection">
-        <img className="collageImg" src="/collage-mid-2.webp" alt="Collage mid 2" />
+        <img className="collageImg" src={`${import.meta.env.BASE_URL}collage-mid-2.webp`} alt="Collage mid 2" />
       </div>
 
       <div className="collageSection twoBoxes">
@@ -292,7 +314,7 @@ function CollageContinuation() {
       <div className="collageSection">
         <img
           className="collageImg"
-          src="/collage-bottom.webp"
+          src={`${import.meta.env.BASE_URL}collage-bottom.webp`}
           alt="Collage bottom"
         />
       </div> */}

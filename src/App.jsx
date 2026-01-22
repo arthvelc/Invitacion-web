@@ -1,11 +1,20 @@
-import './App.css'
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import InvitePage from "./pages/InvitePage";
 
-export default function App() {
+function App() {
+  const basename = import.meta.env.DEV ? "/" : "/Invitacion-web";
+
   return (
-    <div style={{ padding: 20 }}>
-      <h1>Invitación 30s 🎉</h1>
-      <p>Abre un link como:</p>
-      <code>/i/abc123</code>
-    </div>
+    <BrowserRouter basename={basename}>
+      <Routes>
+        {/* Ruta con código dinámico */}
+        <Route path="/:code" element={<InvitePage />} />
+
+        {/* Opcional: raíz */}
+        <Route path="/" element={<InvitePage />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
+
+export default App;
