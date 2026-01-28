@@ -22,8 +22,21 @@ export default function InvitePage() {
   const [nameInput, setNameInput] = useState("");
 
   function confirm(attending) {
-    // aquí luego pegas tu fetch al backend
-    alert(attending ? "Confirmado ✅" : "No asistiré ❌");
+    // Messenger-like buzz on the whole page (InvitePage)
+    const page = document.querySelector(".page");
+    if (page) {
+      page.classList.remove("page-buzz");
+      // Force reflow so the animation can restart
+      void page.offsetWidth;
+      page.classList.add("page-buzz");
+    }
+
+    // Optional real vibration on supported devices
+    if (window.navigator.vibrate) {
+      window.navigator.vibrate(attending ? [20, 30, 20] : [15, 20, 15, 20, 15]);
+    }
+
+    // No alert / message (as requested)
   }
 
   return (
@@ -33,6 +46,7 @@ export default function InvitePage() {
         titleRight={`${invite.name} 30's`}
       >
         <Tabs value={tab} onChange={setTab} items={TABS} />
+        {__inviteInlineStyles}
 
         {/* HEADER + FOTO + TITULO */}
         <div className="panel panel--top">
@@ -80,6 +94,7 @@ export default function InvitePage() {
               nameInput={nameInput}
               setNameInput={setNameInput}
               onConfirmYes={() => confirm(true)}
+              onConfirmNo={() => confirm(false)}
             />
 
             <CollageContinuation />
@@ -100,6 +115,7 @@ export default function InvitePage() {
               nameInput={nameInput}
               setNameInput={setNameInput}
               onConfirmYes={() => confirm(true)}
+              onConfirmNo={() => confirm(false)}
             />
             <div className="spacer" />
             <CollageContinuation />
@@ -184,13 +200,13 @@ function LocationBlock() {
   );
 }
 
-function ConfirmBlock({ nameInput, setNameInput, onConfirmYes }) {
+function ConfirmBlock({ nameInput, setNameInput, onConfirmYes, onConfirmNo }) {
   return (
     <div className="confirmWrap">
       <div className="confirmText">
         Dime si vienes a revivir los 2000’s conmigo ✨
         <br />
-        Deja tu nombre y sabré que me acompañacompañás.
+        Deja tu nombre y sabré que me acompañas.
       </div>
 
       <div className="confirmGrid">
@@ -220,10 +236,22 @@ function ConfirmBlock({ nameInput, setNameInput, onConfirmYes }) {
           <button className="confirmBtn" onClick={onConfirmYes} type="button">
             Confirmar ✅
           </button>
+          <button
+            className="confirmBtn confirmBtn--no"
+            onClick={onConfirmNo}
+            type="button"
+          >
+            No asistiré ❌
+          </button>
+
 
           <div className="qrArea">
             <div className="qrLabel">Tu QR de entrada:</div>
-            <img className="qrImg" src="/qr.png" alt="QR" />
+            <img
+              className="qrImg"
+              src={`${import.meta.env.BASE_URL}qr.png`}
+              alt="QR"
+            />
             <div className="qrHint">(por ahora todos traen el mismo 😄)</div>
           </div>
         </div>
@@ -252,15 +280,15 @@ function CollageContinuation() {
             alt=""
           />
 
-          {/* 2) Dos imágenes 50 / 50 */}
-          <div className="collageBlock collageBlock--two">
-            <img className="collageTile" src="" alt="" />
-            <img
-              className="collageTile"
-              src={`${import.meta.env.BASE_URL}images/collageImages/collage-2.png`}
-              alt=""
-            />
-          </div>
+      {/* 2) Dos imágenes 50 / 50 */}
+      <div className="collageBlock collageBlock--two">
+        <div className="collageTile collageTile--empty" aria-hidden="true" />
+        <img
+          className="collageTile"
+          src={`${import.meta.env.BASE_URL}images/collageImages/collage-2.png`}
+          alt=""
+        />
+      </div>
 
           <p className="collageText">LIMPIA TU CASA, COMIENZA OTRA VEZ…</p>
 
@@ -275,19 +303,19 @@ function CollageContinuation() {
             UN POCO DE AUTOCOMPASIÓN ESTÁ BIEN, PERO ES HORA DE SEGUIR ADELANTE.
           </p>
 
-          {/* 4) (Ejemplo) Dos imágenes 50 / 50 */}
-          <div className="collageBlock collageBlock--two">
-            <img className="collageTile" src="" alt="" />
-            <img className="collageTile" src="" alt="" />
-          </div>
+      {/* 4) (Ejemplo) Dos imágenes 50 / 50 */}
+      <div className="collageBlock collageBlock--two">
+        <div className="collageTile collageTile--empty" aria-hidden="true" />
+        <div className="collageTile collageTile--empty" aria-hidden="true" />
+      </div>
 
           <p className="collageText">SENTIRÁS DOLOR…</p>
 
-          {/* 5) (Ejemplo) Dos imágenes 50 / 50 */}
-          <div className="collageBlock collageBlock--two">
-            <img className="collageTile" src="" alt="" />
-            <img className="collageTile" src="" alt="" />
-          </div>
+      {/* 5) (Ejemplo) Dos imágenes 50 / 50 */}
+      <div className="collageBlock collageBlock--two">
+        <div className="collageTile collageTile--empty" aria-hidden="true" />
+        <div className="collageTile collageTile--empty" aria-hidden="true" />
+      </div>
 
           <p className="collageText">…PERO ASÍ ES LA VIDA</p>
         </div>
@@ -321,3 +349,33 @@ function CollageContinuation() {
     </div>
   );
 }
+// Safety styles for missing CSS
+const __inviteInlineStyles = (
+  <style>{`
+    .confirmBtn--no { margin-top: 8px; opacity: 0.95; }
+    .collageTile--empty { display: block; width: 100%; min-height: 120px; }
+
+    /* Messenger-like buzz */
+    .page.page-buzz {
+      animation: pageBuzz 0.42s cubic-bezier(.2,.9,.2,1);
+    }
+
+    @keyframes pageBuzz {
+      0%   { transform: translateX(0) rotate(0deg); }
+      10%  { transform: translateX(-6px) rotate(-0.4deg); }
+      20%  { transform: translateX(6px)  rotate(0.4deg); }
+      30%  { transform: translateX(-5px) rotate(-0.35deg); }
+      40%  { transform: translateX(5px)  rotate(0.35deg); }
+      50%  { transform: translateX(-3px) rotate(-0.2deg); }
+      60%  { transform: translateX(3px)  rotate(0.2deg); }
+      70%  { transform: translateX(-2px) rotate(-0.12deg); }
+      80%  { transform: translateX(2px)  rotate(0.12deg); }
+      90%  { transform: translateX(-1px) rotate(-0.06deg); }
+      100% { transform: translateX(0) rotate(0deg); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .page.page-buzz { animation: none; }
+    }
+  `}</style>
+);
