@@ -7,7 +7,9 @@ import confetti from "canvas-confetti";
 
 
 const TABS = ["FOTOS", "LUGAR", "CONFIRMAR"];
-const API_BASE = import.meta.env.VITE_API_URL;
+// Netlify/Vite env var: define `VITE_API_BASE_URL` (preferred)
+// Fallback to old name if you already had it
+const API_BASE = (import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_API_URL || "").replace(/\/$/, "");
 const NAME_MAX = 40;
 const NAME_MIN = 3;
 const LOADER_MS = 5000; // mínimo visible (ms)
@@ -33,6 +35,7 @@ export default function InvitePage() {
   const [showQr, setShowQr] = useState(false);
   const [lastAttending, setLastAttending] = useState(null); // null | true | false
   const [hideNameField, setHideNameField] = useState(false);
+  const [apiError, setApiError] = useState("");
 
   const explodingRef = useRef(false);
   const confirmBtnRef = useRef(null);
@@ -80,8 +83,7 @@ export default function InvitePage() {
   const trimmedName = nameInput.trim();
   const nameTooLong = trimmedName.length > NAME_MAX;
   const nameHasInvalidChars = trimmedName.length > 0 && !NAME_REGEX.test(trimmedName);
-  const nameIsValid = trimmedName.length >= NAME_MIN && !nameTooLong && !nameHasInvalidChars;
- console.log("API BASE:", import.meta.env.VITE_API_BASE_URL);
+const nameIsValid = trimmedName.length >= NAME_MIN && !nameTooLong && !nameHasInvalidChars;
 
   async function confirm(attending) {
     // Messenger-like buzz on the whole page (InvitePage)
@@ -100,6 +102,7 @@ export default function InvitePage() {
 
     // Validation: if invalid, just show the red state (no messages)
     if (!nameIsValid || isPosting) return;
+    setApiError("");
 
     let didSucceed = false;
     let pendingAttending = null;
@@ -109,7 +112,12 @@ export default function InvitePage() {
       startedAt = Date.now();
       setShowLoader(true);
       setIsPosting(true);
-      const res = await fetch(`${API_BASE}/api/rsvp`, {
+      if (!API_BASE || !code) {
+        setApiError("No hay URL de API configurada (VITE_API_BASE_URL). Revisa Netlify/entorno.");
+        return;
+      }
+
+      const res = await fetch(`${API_BASE}/${code}/rsvp`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -118,8 +126,11 @@ export default function InvitePage() {
         }),
       });
 
-      // If server errors, silently ignore (no UI messages requested)
-      if (!res.ok) return;
+      // If server errors, show a visible warning
+      if (!res.ok) {
+        setApiError(`No se pudo conectar a la API (HTTP ${res.status}).`);
+        return;
+      }
 
       didSucceed = true;
       pendingAttending = attending;
@@ -130,7 +141,8 @@ export default function InvitePage() {
       // Clear after success
       setNameInput("");
     } catch (e) {
-      // Silent fail (no UI messages requested)
+      // Network / CORS / DNS errors
+      setApiError("No se pudo conectar a la API (error de red/CORS). Revisa que la API esté encendida y CORS permita este dominio.");
     } finally {
       const elapsed = Date.now() - startedAt;
       const remaining = Math.max(0, LOADER_MS - elapsed);
@@ -214,6 +226,7 @@ export default function InvitePage() {
               showQr={showQr}
               lastAttending={lastAttending}
               hideNameField={hideNameField}
+              apiError={apiError}
             />
 
             <CollageContinuation />
@@ -241,6 +254,8 @@ export default function InvitePage() {
               confirmBtnRef={confirmBtnRef}
               showQr={showQr}
               lastAttending={lastAttending}
+              hideNameField={hideNameField}
+              apiError={apiError}
             />
             <div className="spacer" />
             <CollageContinuation />
@@ -325,7 +340,7 @@ function LocationBlock() {
   );
 }
 
-function ConfirmBlock({ nameInput, setNameInput, nameIsValid, isPosting, showLoader, onConfirmYes, onConfirmNo, confirmBtnRef, showQr, lastAttending, hideNameField }) {
+function ConfirmBlock({ nameInput, setNameInput, nameIsValid, isPosting, showLoader, onConfirmYes, onConfirmNo, confirmBtnRef, showQr, lastAttending, hideNameField, apiError }) {
   return (
     <div className="confirmWrap">
       <div className="confirmText">
@@ -348,6 +363,11 @@ function ConfirmBlock({ nameInput, setNameInput, nameIsValid, isPosting, showLoa
             <span className="confirmTitle">Confirmo</span>
             <span className="confirmWave">〰〰〰</span>
           </div>
+          {apiError ? (
+            <div className="apiError" role="alert">
+              {apiError}
+            </div>
+          ) : null}
 
           {!hideNameField && (
           <label className={`field ${!nameIsValid && nameInput.trim().length > 0 ? "is-invalid" : ""}`}>
@@ -528,6 +548,17 @@ const __inviteInlineStyles = (
     .field.is-invalid input {
       border-color: #ff3b30;
       box-shadow: 0 0 0 3px rgba(255,59,48,.18);
+    }
+    .apiError{
+      margin: 10px 0 6px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,59,48,.45);
+      background: rgba(255,59,48,.10);
+      color: #ff3b30;
+      font-weight: 700;
+      font-size: 0.95rem;
+      line-height: 1.25;
     }
     .confirmBtn:disabled{
       opacity: .55;
