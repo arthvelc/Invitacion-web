@@ -7,7 +7,7 @@ import confetti from "canvas-confetti";
 
 
 const TABS = ["FOTOS", "LUGAR", "CONFIRMAR"];
-const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:3001";
+const API_BASE = import.meta.env.VITE_API_URL;
 const NAME_MAX = 40;
 const NAME_MIN = 3;
 const LOADER_MS = 5000; // mínimo visible (ms)
