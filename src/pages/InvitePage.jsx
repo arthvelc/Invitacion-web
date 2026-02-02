@@ -7,7 +7,8 @@ import confetti from "canvas-confetti";
 
 
 const TABS = ["FOTOS", "LUGAR", "CONFIRMAR"];
-// Netlify/Vite env var: define `VITE_API_BASE_URL` (preferred)
+// Netlify/Vite env var: set ONLY the API origin (no path), e.g.
+// https://xxxx.trycloudflare.com
 // Fallback to old name if you already had it
 const API_BASE = (import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_API_URL || "").replace(/\/$/, "");
 const NAME_MAX = 40;
@@ -112,12 +113,12 @@ const nameIsValid = trimmedName.length >= NAME_MIN && !nameTooLong && !nameHasIn
       startedAt = Date.now();
       setShowLoader(true);
       setIsPosting(true);
-      if (!API_BASE || !code) {
+      if (!API_BASE) {
         setApiError("No hay URL de API configurada (VITE_API_BASE_URL). Revisa Netlify/entorno.");
         return;
       }
 
-      const res = await fetch(`${API_BASE}/${code}/rsvp`, {
+      const res = await fetch(`${API_BASE}/api/rsvp`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
