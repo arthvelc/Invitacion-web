@@ -156,8 +156,7 @@ body{
 
   /* iOS Safari: force proper clipping with border-radius + overflow */
   -webkit-mask-image: -webkit-radial-gradient(white, black);
-  transform: translateZ(0);
-  contain: paint;
+  clip-path: inset(0 round 16px);
 }
 
 .leftPhoto::before{
@@ -180,6 +179,8 @@ body{
   display:block;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
+  -webkit-mask-image: -webkit-radial-gradient(white, black);
+  clip-path: inset(0 round 12px);
 }
 .coverImg{
   width:100%;
