@@ -8,6 +8,12 @@
 }
 
 *{ box-sizing:border-box; }
+/* Global image safety (iOS/Safari friendly) */
+img{
+  max-width: 100%;
+  height: auto;
+  display: block; /* avoids baseline gaps + weird overflow in Safari */
+}
 html,body{ height:100%; }
 body{
   margin:0;
@@ -143,6 +149,10 @@ body{
   box-shadow:
     0 0 0 3px rgba(255,255,255,.6) inset,
     0 8px 18px rgba(0,0,0,.25);
+
+  /* iOS Safari: force proper clipping with border-radius + overflow */
+  -webkit-mask-image: -webkit-radial-gradient(white, black);
+  transform: translateZ(0);
 }
 
 .leftPhoto::before{
@@ -162,6 +172,7 @@ body{
   height:100%;
   object-fit:cover;
   border-radius:10px;
+  display:block;
 }
 .coverImg{
   width:100%;
