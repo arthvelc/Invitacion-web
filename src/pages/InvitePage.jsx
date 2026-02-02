@@ -81,6 +81,7 @@ export default function InvitePage() {
   const nameTooLong = trimmedName.length > NAME_MAX;
   const nameHasInvalidChars = trimmedName.length > 0 && !NAME_REGEX.test(trimmedName);
   const nameIsValid = trimmedName.length >= NAME_MIN && !nameTooLong && !nameHasInvalidChars;
+ console.log("API BASE:", import.meta.env.VITE_API_BASE_URL);
 
   async function confirm(attending) {
     // Messenger-like buzz on the whole page (InvitePage)
