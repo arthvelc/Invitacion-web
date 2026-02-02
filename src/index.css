@@ -370,8 +370,8 @@ body{
 }
 .qrLabel{ font-size:12px; font-weight:900; }
 .qrImg{
-  width:140px;
-  border-radius:10px;
+  width:180px;
+  border-radius:20px;
   border:1px solid rgba(7,52,74,.18);
 }
 .qrHint{ font-size:11px; opacity:.7; }
@@ -441,7 +441,8 @@ body{
 
 .collageBlock--two{
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  /* more robust 2-col grid (prevents overflow) */
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 10px;
 }
 
@@ -450,6 +451,14 @@ body{
   display: block;
   border-radius: 10px;
   border: 1px solid rgba(0,0,0,.12);
+  /* keeps tiles consistent and ensures each fits its half */
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+}
+
+.collageTile--empty{
+  background: rgba(255,255,255,.65);
+  border: 1px dashed rgba(0,0,0,.18);
 }
 
 /* Textos encima del collage */
@@ -468,8 +477,8 @@ body{
   background: rgba(0,0,0,.28);
 }
 
-/* En pantallas muy chicas, que 50/50 no se apriete demasiado */
-@media (max-width: 360px){
+/* Only stack on very tiny screens */
+@media (max-width: 320px){
   .collageBlock--two{ grid-template-columns: 1fr; }
 }
 
